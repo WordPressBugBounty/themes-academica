@@ -17,6 +17,61 @@ function academica_setup() {
 	// This theme styles the visual editor to resemble the theme style.
 	add_editor_style( array( 'css/editor-style.css' ) );
 
+	// Block Editor Support
+	add_theme_support( 'editor-styles' );
+	add_theme_support( 'wp-block-styles' );
+	add_theme_support( 'responsive-embeds' );
+	add_theme_support( 'align-wide' );
+
+	// Block Editor Color Palette
+	$accent_color = get_theme_mod( 'academica-accent-color', '#0A5794' );
+	add_theme_support( 'editor-color-palette', array(
+		array(
+			'name'  => __( 'Primary Blue', 'academica' ),
+			'slug'  => 'primary-blue',
+			'color' => $accent_color,
+		),
+		array(
+			'name'  => __( 'Dark Gray', 'academica' ),
+			'slug'  => 'dark-gray',
+			'color' => '#333333',
+		),
+		array(
+			'name'  => __( 'Light Gray', 'academica' ),
+			'slug'  => 'light-gray',
+			'color' => '#777777',
+		),
+		array(
+			'name'  => __( 'White', 'academica' ),
+			'slug'  => 'white',
+			'color' => '#ffffff',
+		),
+	) );
+
+	// Block Editor Font Sizes
+	add_theme_support( 'editor-font-sizes', array(
+		array(
+			'name' => __( 'Small', 'academica' ),
+			'size' => 14,
+			'slug' => 'small'
+		),
+		array(
+			'name' => __( 'Regular', 'academica' ),
+			'size' => 16,
+			'slug' => 'regular'
+		),
+		array(
+			'name' => __( 'Large', 'academica' ),
+			'size' => 18,
+			'slug' => 'large'
+		),
+		array(
+			'name' => __( 'Extra Large', 'academica' ),
+			'size' => 24,
+			'slug' => 'extra-large'
+		),
+	) );
+
 	// Custom Background
 	add_theme_support( 'custom-background' );
 
@@ -67,8 +122,6 @@ function academica_enqueue_scripts() {
 
 	wp_enqueue_style( 'academica-style-mobile', get_template_directory_uri() . '/media-queries.css', array( 'academica-style' ), '1.0' );
 
-	wp_enqueue_style( 'academica-google-font-default', '//fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Condensed:400,700&subset=latin,cyrillic-ext,greek-ext&display=swap' );
-
 	wp_enqueue_style( 'dashicons' );
 
  	wp_enqueue_script( 'mmenu', get_template_directory_uri() . '/js/jquery.mmenu.min.all.js', array( 'jquery' ), '20150325', true );
@@ -93,27 +146,27 @@ function academica_widgets_init() {
 	register_sidebar( array(
 		'name'          => __( 'Sidebar: Left', 'academica' ),
 		'id'            => 'sidebar-1',
-		'before_widget' => '<div id="%1$s" class="widget clearfix %2$s">',
-		'after_widget'  => '</div>',
-		'before_title'  => '<h3 class="heading">',
+		'before_widget' => '<section id="%1$s" class="widget clearfix %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
 	) );
 
 	register_sidebar( array(
 		'name'          => __( 'Sidebar: Right', 'academica' ),
 		'id'            => 'sidebar-2',
-		'before_widget' => '<div id="%1$s" class="widget clearfix %2$s">',
-		'after_widget'  => '</div>',
-		'before_title'  => '<h3 class="heading">',
+		'before_widget' => '<section id="%1$s" class="widget clearfix %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
 	) );
 
 	register_sidebar( array(
 		'name'          => __( 'Footer', 'academica' ),
 		'id'            => 'sidebar-3',
-		'before_widget' => '<div id="%1$s" class="widget clearfix %2$s">',
-		'after_widget'  => '</div>',
-		'before_title'  => '<h3 class="heading">',
+		'before_widget' => '<section id="%1$s" class="widget clearfix %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widget-title">',
 		'after_title'   => '</h3>',
 	) );
 
@@ -247,15 +300,6 @@ function academica_continue_reading_link() {
 endif; // academica_continue_reading_link
 
 /**
- * Replaces "[...]" (appended to automatically generated excerpts) with an
- * ellipsis and academica_continue_reading_link().
- */
-function academica_auto_excerpt_more( $more ) {
-	return ' &hellip;' . academica_continue_reading_link();
-}
-add_filter( 'excerpt_more', 'academica_auto_excerpt_more' );
-
-/**
  * Adds a pretty "Continue Reading" link to custom post excerpts.
  */
 function academica_custom_excerpt_more( $output ) {
@@ -362,7 +406,7 @@ function academica_entry_meta() {
 
 	// Translators: 1 is the author's name, 2 is category, and 3 is the date.
 	if ( $categories_list ) {
-		$utility_text = __( '<span class="by-author">By %1$s </span>in <span class="category">%2$s</span> on <span class="datetime">%3$s</span>.', 'academica' );
+		$utility_text = __( '<span class="by-author">By %1$s </span>in <span class="category">%2$s</span> on <span class="datetime">%3$s</span>', 'academica' );
 	} else {
 		$utility_text = __( '<span class="by-author">By %1$s </span>on <span class="datetime">%3$s</span>.', 'academica' );
 	}
@@ -657,4 +701,45 @@ if (is_admin()) {
 
     }
 
+}
+
+/**
+ * Sanitize content display setting
+ */
+if (!function_exists('academica_sanitize_content_display')) {
+    function academica_sanitize_content_display($input) {
+        $valid_options = array('excerpt', 'full');
+        return in_array($input, $valid_options) ? $input : 'excerpt';
+    }
+}
+
+/**
+ * Sanitize font stack setting
+ */
+if (!function_exists('academica_sanitize_font_stack')) {
+    function academica_sanitize_font_stack($input) {
+        $valid_options = array('system-ui', 'transitional', 'humanist', 'geometric', 'classical', 'neo-grotesque', 'monospace', 'industrial', 'rounded', 'slab-serif');
+        return in_array($input, $valid_options) ? $input : 'system-ui';
+    }
+}
+
+/**
+ * Get available font stacks (based on Modern Font Stacks)
+ * @see https://github.com/system-fonts/modern-font-stacks
+ */
+if (!function_exists('academica_get_font_stacks')) {
+    function academica_get_font_stacks() {
+        return array(
+            'system-ui'     => 'system-ui, sans-serif',
+            'transitional'  => 'Charter, "Bitstream Charter", "Sitka Text", Cambria, serif',
+            'humanist'      => 'Seravek, "Gill Sans Nova", Ubuntu, Calibri, "DejaVu Sans", source-sans-pro, sans-serif',
+            'geometric'     => 'Avenir, "Avenir Next LT Pro", Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif',
+            'classical'     => 'Optima, Candara, "Noto Sans", source-sans-pro, sans-serif',
+            'neo-grotesque' => 'Inter, Roboto, "Helvetica Neue", "Arial Nova", Nimbus Sans, Arial, sans-serif',
+            'monospace'     => '"SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
+            'industrial'    => 'Bahnschrift, "DIN Alternate", "Franklin Gothic Medium", "Nimbus Sans Narrow", sans-serif-condensed, sans-serif',
+            'rounded'       => 'ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa, Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri, source-sans-pro, sans-serif',
+            'slab-serif'    => 'Rockwell, "Rockwell Nova", "Roboto Slab", "DejaVu Serif", "Sitka Small", serif',
+        );
+    }
 }
