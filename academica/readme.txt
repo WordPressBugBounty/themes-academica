@@ -1,15 +1,15 @@
 === Academica ===
 Contributors: WPZOOM
 Requires at least: 6.0
-Tested up to: 6.8
-Version: 2.1.0
+Tested up to: 6.9
+Version: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: two-columns, three-columns, custom-header, custom-menu, translation-ready, right-sidebar, custom-background, custom-colors, editor-style, featured-images, footer-widgets, full-width-template, sticky-post, threaded-comments, blog, rtl-language-support, accessibility-ready
+Tags: two-columns, three-columns, custom-header, custom-menu, translation-ready, right-sidebar, custom-background, custom-colors, editor-style, featured-images, footer-widgets, full-width-template, sticky-post, threaded-comments, blog, rtl-language-support
 
 == Description ==
 
-Description: Academica is a lightweight, accessible, and privacy-friendly WordPress theme designed for schools, universities, and educational institutions. With a clean three-column layout and modern design, it’s perfect for presenting academic programs, events, and news. The theme is fully customizable, GDPR-compliant, and optimized for fast performance. It uses system fonts only (no Google Fonts) for better privacy and speed. Looking for more features? Upgrade to Academica PRO 3.0 to unlock advanced customization options, Elementor integration, additional layouts, and premium support - ideal for creating a professional education website.
+Description: Academica is a lightweight and privacy-friendly WordPress theme designed for schools, universities, and educational institutions. With a clean three-column layout and modern design, it’s perfect for presenting academic programs, events, and news. The theme is fully customizable, GDPR-compliant, and optimized for fast performance. It uses system fonts only (no Google Fonts) for better privacy and speed. Looking for more features? Upgrade to Academica PRO 3.0 to unlock advanced customization options, Elementor integration, additional layouts, and premium support - ideal for creating a professional education website.
 
 More customization options & features are available in the PRO version. https://www.wpzoom.com/themes/academica-pro-3/
 
@@ -21,8 +21,29 @@ More customization options & features are available in the PRO version. https://
 4. Go to https://www.wpzoom.com/documentation/academica for a guide on how to customize this theme.
 5. Navigate to Appearance > Customize in your admin panel and customize to taste.
 
+== Copyright ==
+
+Academica WordPress Theme, Copyright 2025 WPZOOM BV
+Academica is distributed under the terms of the GNU GPL
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
 
 == Changelog ==
+
+= 2.1.2 =
+* Minor fix
+
+= 2.1.1 =
+* Removed "accessibility-ready" tag
 
 = 2.1.0 =
 * Added: Typography section in Customizer with modern font stacks (10 scientific options)
@@ -32,7 +53,6 @@ More customization options & features are available in the PRO version. https://
 * Performance: Replaced Google Fonts with system font stack for faster loading
 * Added: Complete Gutenberg/Block Editor support with custom color palette
 * Fixed: Site title H1 structure for better SEO (now uses div instead of h1)
-* Added: Accessibility-ready tag support with comprehensive accessibility improvements
 * Added: Skip links for keyboard navigation to main content
 * Enhanced: Focus indicators for all interactive elements (links, buttons, form fields)
 * Enhanced: Proper heading structure - H1 for site title on homepage only, post/page titles use H1 on individual pages
@@ -45,6 +65,7 @@ More customization options & features are available in the PRO version. https://
 * Enhanced: Widget structure using semantic section elements
 * Enhanced: Footer navigation with proper ARIA labeling
 * Improved: JavaScript for better keyboard and screen reader support
+* Removed: Deprecated wp_title() function - now uses modern add_theme_support( 'title-tag' )
 
 = 2.0.8 =
 * Minor fixes for PHP 8.0+
